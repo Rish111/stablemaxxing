@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Airtable from 'airtable';
 import { Loader2, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -118,8 +118,12 @@ function UpdatePage() {
         throw new Error('Missing Airtable credentials');
       }
 
-      const airtable = new Airtable({ apiKey });
-      const base = airtable.base(baseId);
+      Airtable.configure({
+        apiKey,
+        endpointUrl: 'https://api.airtable.com'
+      });
+
+      const base = Airtable.base(baseId);
 
       // First get all records
       const records = await new Promise<StablecoinRecord[]>((resolve, reject) => {

@@ -94,8 +94,12 @@ function App() {
           throw new Error('Missing Airtable credentials');
         }
 
-        const airtable = new Airtable({ apiKey });
-        const base = airtable.base(baseId);
+        Airtable.configure({
+          apiKey,
+          endpointUrl: 'https://api.airtable.com'
+        });
+
+        const base = Airtable.base(baseId);
         
         const records = await new Promise<StablecoinData[]>((resolve, reject) => {
           const items: StablecoinData[] = [];
